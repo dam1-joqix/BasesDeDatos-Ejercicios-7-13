@@ -112,7 +112,7 @@ public class Ejercicio08 {
 	 *            indica el dato a introducir
 	 * @return dato introducido
 	 */
-	private static int pideInt(String tipo) {
+	public static int pideInt(String tipo) {
 		int entero = 0;
 		Scanner sc = new Scanner(System.in);
 		boolean correcto = false;

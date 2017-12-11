@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Ejercicio09 {
 
 	public static void main(String[] args) {
-
+		select(ejercicio08.Ejercicio08.pideInt("Numero de departamento"));
 	}
 
 	public static void select(int departamento) {
@@ -19,32 +19,33 @@ public class Ejercicio09 {
 		Connection conexion = getConnection("mysql");
 		ResultSet rs = null;
 		PreparedStatement pst = null;
+		boolean existe=false;
+		int numEmpleados=0;
 		try {
 			pst = conexion.prepareStatement(sql);
 			pst.setInt(1, departamento);
 			rs = pst.executeQuery();
 			System.out.println("Estos son los datos del departamento " + departamento);
 			while (rs.next()) {
+				existe=true;
 				System.out.println("Numero: " + rs.getInt(1) + " Apellido: " + rs.getString(2) + " Oficio: "
 						+ rs.getString(3) + " Director " + rs.getInt(4) + " Fecha alta: " + rs.getDate(5) + " Salario: "
 						+ rs.getFloat(6) + " comision: " + rs.getFloat(7) + " numero de departamento: " + rs.getInt(8));
+				numEmpleados++;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if (!selectNumDept().contains(departamento)) {
+		if (!existe) {
 			System.out.println("El departamento no existe");
 		} else {
 			rs = null;
-			try {
-				int numEmpleados = pst.executeUpdate();
 				System.out.println("Hay " + numEmpleados + " empleados en el departamento ");
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			sql = "SELECT AVG(salario) FROM empleados WHERE num_dept=?";
+			
+			sql = "SELECT AVG(salario) FROM empleados WHERE dept_no="+departamento;
 			pst = null;
 			try {
+				//TODO Corregir
 				pst = conexion.prepareStatement(sql);
 				pst.setInt(1, departamento);
 				rs = pst.executeQuery();
