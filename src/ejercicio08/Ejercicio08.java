@@ -56,9 +56,9 @@ public class Ejercicio08 {
 			if (!empleados.contains(numero)) {
 				if (empleados.contains(dir)) {
 					if (salario > 0) {
-						String insert = "INSEERT INTO empleados(emp_no,apellido,oficio,dir,fecha_alt,salario,comision,dept_no) VALUES("
-								+ numero + "," + apellido + "," + oficio + "," + dir + ",sysdate()," + salario + ","
-								+ comision + "," + numDept + ");";
+						String insert = "INSEERT INTO empleados VALUES("
+								+ numero + "," + apellido + "," + oficio + "," + dir + ",sysdate()," + (float)salario + ","
+								+ (float)comision + "," + numDept + ");";
 						try {
 							int filas = st.executeUpdate(insert);
 							System.out.println("Datos insertados " + filas + " filas afectadas");
@@ -186,7 +186,7 @@ public class Ejercicio08 {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/acadt", "root", "");
 			Statement st = conexion.createStatement();
-			ResultSet rs = st.executeQuery("SELECT num_depto FROM depaqrtamentos");
+			ResultSet rs = st.executeQuery("SELECT dept_no FROM departamentos");
 
 			while (rs.next()) {
 				departamentos.add(rs.getInt(1));
