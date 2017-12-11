@@ -6,19 +6,25 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Este programa muestra las tablas que tiene la tabla empleados de la base de
+ * datos creada con sqlite Para ello llama al metodo
+ * {@link #getColumnaTabla(String, String, String)}: Este metodo llama a
+ * {@link #getConnection(String)} para conectarse a la base de datos sqlite y
+ * despues muestra la informacion de las columnas de la tabla
+ * 
+ * @author Joaquin Alonso Perianez
+ *
+ */
 public class Ejercicio07 {
-	
+
 	public static void main(String[] args) {
 		getColumnaTabla("sqlite", null, "empleados");
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * Muestra las columnas que tiene una tabla de una base de datos Obtendra la
-	 * conexion con el metodo getConnection
+	 * conexion con el metodo {@link #getConnection(String)}
 	 * 
 	 * 
 	 * @param bd
@@ -27,6 +33,7 @@ public class Ejercicio07 {
 	 *            esquema de la base de datos
 	 * @param tabla
 	 *            tabla de la que queremos obtener información
+	 * @see #getConnection(String)
 	 */
 	public static void getColumnaTabla(String bd, String esquema, String tabla) {
 		Connection conection = getConnection(bd);
@@ -41,10 +48,10 @@ public class Ejercicio07 {
 				String tipoCol = columnas.getString("TYPE_NAME");
 				String tamanyoCol = columnas.getString("COLUMN_SIZE");
 				String nula = columnas.getString("IS_NULLABLE");
-				if(nula.equalsIgnoreCase("YES")) {
-					nula="SÍ";
-				}else {
-					nula="NO";
+				if (nula.equalsIgnoreCase("YES")) {
+					nula = "SÍ";
+				} else {
+					nula = "NO";
 				}
 				System.out.println("Columna: " + nombreCol + ", Tipo: " + tipoCol + ", Tamaño: " + tamanyoCol
 						+ ", ¿Puede ser Nula? " + nula);
@@ -56,7 +63,6 @@ public class Ejercicio07 {
 		}
 	}
 
-	
 	/**
 	 * El metodo devuelve una conexion dado un string que será el nombre de la base
 	 * de datos. Los nombres aceptados son <list>
