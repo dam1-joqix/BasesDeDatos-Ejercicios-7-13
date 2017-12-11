@@ -56,8 +56,10 @@ public class Ejercicio08 {
 			if (!empleados.contains(numero)) {
 				if (empleados.contains(dir)) {
 					if (salario > 0) {
-						String insert = "INSEERT INTO empleados VALUES("
-								+ numero + "," + apellido + "," + oficio + "," + dir + ",sysdate()," + (float)salario + ","
+
+						
+						String insert = "INSERT INTO empleados (emp_no, apellido, oficio, dir, fecha_alt, salario, comision, dept_no) VALUES("
+								+ numero + ",'" + apellido + "','" + oficio + "'," + dir + ",sysdate()," + (float)salario + ","
 								+ (float)comision + "," + numDept + ");";
 						try {
 							int filas = st.executeUpdate(insert);

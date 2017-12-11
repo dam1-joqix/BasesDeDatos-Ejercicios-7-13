@@ -8,30 +8,43 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Muestra los empleados de un departamento, cuantos hay y su salario medio
+ * 
+ * @author Joaquin Alonso Perianex
+ *
+ */
 public class Ejercicio09 {
 
 	public static void main(String[] args) {
 		select(ejercicio08.Ejercicio08.pideInt("Numero de departamento"));
 	}
 
+	/**
+	 * Muestra los empleados de un departamento, cuantos hay y su salario medio
+	 * 
+	 * @param departamento
+	 */
 	public static void select(int departamento) {
 		String sql = "SELECT * FROM empleados WHERE dept_no=?";
 		Connection conexion = getConnection("mysql");
 		ResultSet rs = null;
 		PreparedStatement pst = null;
-		boolean existe=false;
-		int numEmpleados=0;
+		boolean existe = false;
+		int numEmpleados = 0;
+		int salarios = 0;
 		try {
 			pst = conexion.prepareStatement(sql);
 			pst.setInt(1, departamento);
 			rs = pst.executeQuery();
 			System.out.println("Estos son los datos del departamento " + departamento);
 			while (rs.next()) {
-				existe=true;
+				existe = true;
 				System.out.println("Numero: " + rs.getInt(1) + " Apellido: " + rs.getString(2) + " Oficio: "
 						+ rs.getString(3) + " Director " + rs.getInt(4) + " Fecha alta: " + rs.getDate(5) + " Salario: "
 						+ rs.getFloat(6) + " comision: " + rs.getFloat(7) + " numero de departamento: " + rs.getInt(8));
 				numEmpleados++;
+				salarios += rs.getFloat(6);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -40,46 +53,13 @@ public class Ejercicio09 {
 			System.out.println("El departamento no existe");
 		} else {
 			rs = null;
-				System.out.println("Hay " + numEmpleados + " empleados en el departamento ");
-			
-			sql = "SELECT AVG(salario) FROM empleados WHERE dept_no="+departamento;
-			pst = null;
-			try {
-				//TODO Corregir
-				pst = conexion.prepareStatement(sql);
-				pst.setInt(1, departamento);
-				rs = pst.executeQuery();
-				System.out.println("La media de sueldo del departamento es " + rs.getFloat(1));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			System.out.println("Hay " + numEmpleados + " empleados en el departamento ");
+			System.out.println("La media de salario de los empleados del departamento " + departamento + " es: "
+					+ (salarios / numEmpleados));
 		}
 	}
 
-	/**
-	 * Selecciona los numeros de departamento y los guarda en un ArrayList
-	 * 
-	 * @return numeros obtenidos
-	 */
-	private static ArrayList<Integer> selectNumDept() {
-		ArrayList<Integer> departamentos = new ArrayList<>();
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/acadt", "root", "");
-			Statement st = conexion.createStatement();
-			ResultSet rs = st.executeQuery("SELECT num_depto FROM depaqrtamentos");
-
-			while (rs.next()) {
-				departamentos.add(rs.getInt(1));
-			}
-			conexion.close();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return departamentos;
-	}
+	
 
 	/**
 	 * El metodo devuelve una conexion dado un string que será el nombre de la base
